@@ -1,0 +1,58 @@
+body{
+    background-color: rgb(242, 242, 253);
+}
+
+/* custom css */
+.bg-white{
+    background-color: white;
+}
+/* end of custom css */
+
+
+/* file upload */
+
+.drop-zone {
+    max-width: 200px;
+    height: 200px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-family: "Quicksand", sans-serif;
+    font-weight: 500;
+    font-size: 20px;
+    cursor: pointer;
+    color: #cccccc;
+    border: 2px dashed #009578;
+    border-radius: 10px;
+  }
+  .drop-zone--over {
+    border-style: solid;
+  }
+  .drop-zone__input {
+    display: none;
+  }
+  .drop-zone__thumb {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #cccccc;
+    background-size: cover;
+    position: relative;
+  }
+  .drop-zone__thumb::after {
+    content: attr(data-label);
+    position: flex;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 2px 0;
+    color: #ffffff;
+    background: rgba(0, 0, 0, 0.75);
+    font-size: 12px;
+    text-align: center;
+  }
+/* endof file upload */

@@ -1,0 +1,31 @@
+{% extends '_base.html' %} 
+{% load crispy_forms_tags %}
+
+{% block title %}
+REQUEST HAIR DO
+{% endblock %}
+
+{% block content %}
+<div class="container text-center d-flex flex-column">
+    <br>
+    <br>
+    <br>
+ 
+
+
+     <div class="row">
+         <div class="col-md-12">
+            <div class="container text-center d-flex flex-column">
+                <h1>
+                    The value could be: <span>{{ prediction }}</span>
+                </h1>
+            </div>
+         </div>
+         <br>
+         <p>
+            Loss: <span>{{ loss }}</span> <br>
+            Accuracy: <span> {{ accuracy }} </span>
+         </p>
+     </div>
+</div>
+{% endblock %}
