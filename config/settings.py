@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 # GENERAL
@@ -173,3 +174,5 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = r'./ServiceAccountAPI.json'

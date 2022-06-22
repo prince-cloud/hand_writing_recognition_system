@@ -1,11 +1,18 @@
 from django.shortcuts import render
-import cv2 as cv
-import numpy as np
-import matplotlib.pyplot as plt
-import tensorflow as tf
-from .forms import *
 from django.contrib import messages
+#packages
+import os, io
+from google.cloud import vision
+from google.cloud.vision_v1 import types
+from google.cloud import vision_v1
+from translate import Translator
+
+
+from services.forms import ScanTextForm, TranslateTextForm
 # Create your views here.
+
+
+
 
 def index(request):
     return render(request, 'index.html', {
@@ -14,55 +21,57 @@ def index(request):
 
 
 def scan_text(request):
-    loss = 0
-    accuracy = 0
-    prediction = ""
+    docText = ""
     if request.method == "POST":
         form = ScanTextForm(data=request.POST, files=request.FILES)
         if form.is_valid():
-            form_file = form.cleaned_data['image']
-            #inblut dataset for text recognition
-            mnist = tf.keras.datasets.mnist
-            (x_train, y_train), (x_test, y_test) = mnist.load_data()
-
-            x_train = tf.keras.utils.normalize(x_train, axis=1)
-            x_test = tf.keras.utils.normalize(x_test, axis=1)
-
-            ## creating model (neural network)
-            model = tf.keras.models.Sequential()
-            model.add(tf.keras.layers.Flatten(input_shape=(28,28)))
-            model.add(tf.keras.layers.Dense(units=128, activation=tf.nn.relu))
-            model.add(tf.keras.layers.Dense(units=128, activation=tf.nn.relu))
-            model.add(tf.keras.layers.Dense(units=10, activation=tf.nn.softmax))
-
-            ## compiling the model
-            model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
-
-            model.fit(x_train, y_train, epochs=2)
-
-            ##assigning loss and accuracy percentage
-            loss, accuracy = model.evaluate(x_test, y_test)
-            form.save()
-
-            ##reading uploaded image
-            img = cv.imread(f'./scanned_images/{form_file}')
-            for i in range(1,2):
-                img = np.invert(np.asarray([img]))
-            ##predicting what letter of the image could be 
-                pred = model.predict(img)
-                prediction = np.argmax(pred)
-                print("=============== prediction: ", prediction)
-
-            ##saving uploaded image
+            data = form.cleaned_data
+            scan_form = form.save(commit=False)
+            image_file = data['image']
+            client = vision_v1.ImageAnnotatorClient()
+            content = image_file.read()
+            image = vision_v1.types.Image(content=content)
+            response = client.document_text_detection(image=image)
+            docText = response.full_text_annotation.text
+            print(docText)
+            scan_form.save()
         else:
-            messages.error(request, 'invalid data entry')
-
+            messages.error(request, 'form invalid')
     else:
         form = ScanTextForm()
 
-    return render(request, "scaned-text.html", {
-        "loss": loss,
-        "accuracy": accuracy,
-        "form": form,
-        "prediction": prediction
-    })
+    return render(request, 'pages/scan_text.html', 
+        {
+            "form": form, 
+            "docText": docText,
+            "translate_form": TranslateTextForm(),
+        })
+
+
+def translateText(request):
+    translation = ""
+    translate_to = ""
+    if request.method == "POST":
+        form = TranslateTextForm(data=request.POST, files=request.FILES)
+        if form.is_valid():
+            data = form.cleaned_data
+            translateForm = form.save(commit=False)
+            text = data['text']
+            translate_to = data['translate_to']
+
+            translator = Translator(to_lang=f"{translate_to}")
+            translation = translator.translate(f"{text}")
+
+            print (translation)
+            translateForm.save()
+        else:
+            messages.error(request, "invalid data entry")
+    else:
+        form = TranslateTextForm()
+
+    return render(request, "pages/translate_text.html", 
+        {
+            "form": form, 
+            "translation": translation,
+            "translate_to": translate_to
+        })

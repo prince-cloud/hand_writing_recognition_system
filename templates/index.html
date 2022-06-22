@@ -1,119 +1,65 @@
-{% extends '_base.html' %} {% block content %}
+{% extends '_base.html' %}
+{% load static %}
+{% block content %}
 
-<div class="container bg-white shadow-sm p-4" style="height: 750px;">
+<div class="container  shadow-sm p-4" style="height: 750px;">
     <div class="row justify-content-center align-items-center text-center mt-4">
         <div class="col-md-8">
             <h5 class="display-5">
-                HAND WRITING TEXT RECOGNITION SYSTEM
+                What do you want to do?
             </h5>
         </div>
     </div>
+    <br>
+    <br>
 
     <div class="row justify-content-center align-items-center text-center mt-4">
-        <div class="col-md-8">
-            <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
-                tabindex="-1">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalToggleLabel">Upload Image</h5>
-                            <button type="button" class="btn-close bg-danger text-white" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form method="POST" enctype="multipart/form-data"
-                                action="{% url 'services:scan_text' %}">
-                                {% csrf_token %} {{ ScanTextForm.as_p }}
-                                <div class="text-center flex-row justify-content-center align-content-center d-flex">
-                                    <div class="drop-zone">
-                                        <span class="drop-zone__prompt"> Drag and Drop file here or click to
-                                            upload</span>
-                                        <input type="file" name="myFile" id="" value="{{myFile}}" class="drop-zone__input">
-                                    </div>
-                                </div>
-
-
-                                <div class="mt-4">
-                                    <input type="submit" class="btn btn-success" value="Scan">
-                                </div>
-                            </form> 
-                        </div>
-                        <div class="modal-footer text-center d-flex justify-content-center align-items-center">
-                            <small>
-                                please upload image of handwritten text
-                            </small>
-                        </div>
-                    </div>
+        <div class="col-md-4 text-center mb-4">
+            <a class="card shadow-lg text-center text-decoration-none" href="{% url 'services:scan_text' %}">
+                <img class="card-img-top cimage text-center" src="{% static 'images/convert.png' %}"
+                    alt="Card image cap">
+                <div class="card-body">
+                    <h3 class="card-title">
+                        Scan Text
+                    </h3>
+                    <hr>
+                    <p class="card-text">
+                        Convert Handwritten text into digital form
+                    </p>
                 </div>
-            </div>
-
-            <a data-bs-toggle="modal" href="#exampleModalToggle" role="button" class="btn btn-success btn-lg btn-block">
-                Scan Text
             </a>
         </div>
-    </div>
-
-    <div class="testing">
-
+        <div class="col-md-4 text-center mb-4">
+            <a class="card shadow-lg text-center text-decoration-none" href="{% url 'services:translateText' %}">
+                <img class="card-img-top cimage text-center" src="{% static 'images/translate.png' %}"
+                    alt="Card image cap">
+                <div class="card-body">
+                    <h3 class="card-title">
+                        Translate Text
+                    </h3>
+                    <hr>
+                    <p class="card-text">
+                        Copy and paste text to Translate
+                    </p>
+                </div>
+            </a>
+        </div>
+       <!--  <div class="col-md-4 text-center mb-4">
+            <a class="card shadow-lg text-center text-decoration-none" href="{% url 'services:translateText' %}">
+                <img class="card-img-top cimage text-center" src="{% static 'images/translate.png' %}"
+                    alt="Card image cap">
+                <div class="card-body">
+                    <h3 class="card-title">
+                        Translate Text
+                    </h3>
+                    <hr>
+                    <p class="card-text">
+                        Copy and paste text to Translate
+                    </p>
+                </div>
+            </a>
+        </div> -->
     </div>
 
 </div>
-
-
-<script>
-    document.querySelectorAll(".drop-zone__input").forEach((inputElement) => {
-        const dropZoneElement = inputElement.closest(".drop-zone");
-        dropZoneElement.addEventListener("click", (e) => {
-            inputElement.click();
-        });
-        inputElement.addEventListener("change", (e) => {
-            if (inputElement.files.length) {
-                updateThumbnail(dropZoneElement, inputElement.files[0]);
-            }
-        });
-        dropZoneElement.addEventListener("dragover", (e) => {
-            e.preventDefault();
-            dropZoneElement.classList.add("drop-zone--over");
-        });
-        ["dragleave", "dragend"].forEach((type) => {
-            dropZoneElement.addEventListener(type, (e) => {
-                dropZoneElement.classList.remove("drop-zone--over");
-            });
-        });
-        dropZoneElement.addEventListener("drop", (e) => {
-            e.preventDefault();
-            if (e.dataTransfer.files.length) {
-                inputElement.files = e.dataTransfer.files;
-                updateThumbnail(dropZoneElement, e.dataTransfer.files[0]);
-            }
-            dropZoneElement.classList.remove("drop-zone--over");
-        });
-    });
-
-    function updateThumbnail(dropZoneElement, file) {
-        let thumbnailElement = dropZoneElement.querySelector(".drop-zone__thumb");
-        // First time - remove the prompt
-        if (dropZoneElement.querySelector(".drop-zone__prompt")) {
-            dropZoneElement.querySelector(".drop-zone__prompt").remove();
-        }
-        // First time - there is no thumbnail element, so lets create it
-        if (!thumbnailElement) {
-            thumbnailElement = document.createElement("div");
-            thumbnailElement.classList.add("drop-zone__thumb");
-            dropZoneElement.appendChild(thumbnailElement);
-        }
-        thumbnailElement.dataset.label = file.name;
-        // Show thumbnail for image files
-        if (file.type.startsWith("image/")) {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => {
-                thumbnailElement.style.backgroundImage = `url('${reader.result}')`;
-            };
-        } else {
-            thumbnailElement.style.backgroundImage = null;
-        }
-    }
-</script>
-
 {% endblock %}

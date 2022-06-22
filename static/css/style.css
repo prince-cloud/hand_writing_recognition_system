@@ -56,3 +56,11 @@ body{
     text-align: center;
   }
 /* endof file upload */
+
+/* home page */
+.cimage{
+  object-fit: contain;
+  width: 100%;
+  height: 200px;
+}
+/* end of homepage */
