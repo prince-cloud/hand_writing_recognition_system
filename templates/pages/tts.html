@@ -1,0 +1,51 @@
+{% extends '_base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %}
+Scan Text
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="container text-center  shadow-lg bg-white">
+        <br>
+        <br>
+        <br>
+    
+    
+    
+        <div class="row justify-content-center align-items-center text-center mt-4">
+            <div class="col-md-5">
+                <img src="{% static 'images/text-to-speech.jpg' %}" alt="" 
+                style="width: 100%; height: 400px; object-fit: contain;">
+            </div>
+            <div class="col-md-7">
+                <div class="container text-center d-flex flex-column">
+                    <form class="forms-sample dropzone" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-group dropzone">
+                            {{ form | crispy }}
+                        </div>
+                        <input type="submit" class="btn btn-dark btn-lg btn-block mt-3" value="Convert">
+                    </form>
+                </div>
+
+                <div>
+                    {% if filename %}
+                    <audio src="{{filename}}" autoplay controls></audio>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+           
+        </div>
+    </div>
+    
+</div>
+
+
+
+{% endblock %}

@@ -11,3 +11,9 @@ class TranslateTextForm(forms.ModelForm):
     class Meta:
         model = TranslateText
         fields = ('text',"translate_to",)
+
+
+class TextToSpeechForm(forms.ModelForm):
+    class Meta:
+        model = TextToSpeech
+        fields = ('text',)

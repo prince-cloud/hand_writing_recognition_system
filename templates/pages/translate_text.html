@@ -1,12 +1,12 @@
 {% extends '_base.html' %}
 {% load crispy_forms_tags %}
-
+{% load static %}
 {% block title %}
 Scan Text
 {% endblock %}
 
 {% block content %}
-<div class="container text-center d-flex flex-column">
+<div class="container bg-white shadow-lg text-center d-flex flex-column">
     <br>
     <br>
     <br>
@@ -14,7 +14,15 @@ Scan Text
 
 
     <div class="row justify-content-center  text-center mt-4">
-        <div class="col-md-6">
+        <div class="col-md-5">
+            <img src="{% static 'images/translate_text.png' %}" alt="" width="100%">
+        </div>
+        <div class="col-md-7">
+            <h2>
+                Translate your text below
+            </h2>
+            <hr>
+            <br>
             <div class="container text-center d-flex flex-column">
                 <form class="forms-sample" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
@@ -28,25 +36,10 @@ Scan Text
                 </form>
             </div>
         </div>
-
-        {% if translation %}
-        <div class="col-md-6">
-            <div class=" p-4">
-                <h5 class="text-bolder">
-                   Translated to {{ translate_to }}
-                </h5>
-                <hr>
-                <div class="shadow-lg">
-                    <textarea name="" id="" cols="65" rows="4">
-                        {{ translation }}
-                    </textarea>
-                    
-                </div>
-            </div>
-        </div>
-        {% endif %}
         <br>
 
     </div>
+    <br>
+    <br>
 </div>
 {% endblock %}

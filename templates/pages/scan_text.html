@@ -1,42 +1,68 @@
 {% extends '_base.html' %}
 {% load crispy_forms_tags %}
-
+{% load static %}
 {% block title %}
 Scan Text
 {% endblock %}
 
 {% block content %}
-<div class="container text-center d-flex flex-column">
-    <br>
-    <br>
-    <br>
+<div class="container-fluid">
+    <div class="container text-center d-flex flex-column shadow-lg bg-white">
+        <br>
+        <br>
+        <br>
 
 
 
-    <div class="row justify-content-center align-items-center text-center mt-4">
-        <div class="col-md-12">
-            <div class="container text-center d-flex flex-column">
-                <form class="forms-sample" method="post" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    <div class="form-group">
-                        {{ form }}
+        <div class="row justify-content-center align-items-center text-center mt-4">
+            <div class="col-md-5">
+                <img src="{% static 'images/scan_text.png' %}" alt="" style="width: 100%; height: 400px; object-fit: contain;">
+            </div>
+            <div class="col-md-7">
+                <div class="container text-center d-flex flex-column">
+                    <h2>
+                        Upload your image below
+                    </h2>
+                    <hr>
+                    <br>
+                    <form class="forms-sample dropzone" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-group dropzone">
+                            {{ form }}
+                        </div>
+                        <br>
+                        <input type="submit" class="btn btn-dark btn-lg btn-block mt-3" value="Convert">
+                    </form>
+                </div>
+            </div>
+           
+            <div class="col-md-12">
+
+                <br>
+                <br>
+
+
+                {% if docText %}
+                <div class="row pb-4">
+                    <div class="col-md-6">
+                        <img width="100%" src="{{ myimageurl }}" alt="image not found" srcset="">
                     </div>
-                    <input type="submit" class="btn btn-dark btn-lg btn-block mt-3" value="Convert">
-                </form>
-            </div>
-
-            <br>
-            <br>
-
-            {% if docText %}
-            
-            <div>
-                <textarea name="" id="" cols="70" rows="10">
+                    <div class=" col-md-6">
+                        <textarea name="" id="" cols="70" rows="8">
                     {{ docText }}
-                </textarea>
-            </div>
+                    </textarea>
+                    </div>
+                </div>
+                <div class="row">
 
-            {% endif %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+</div>
+
 
 
 {% endblock %}

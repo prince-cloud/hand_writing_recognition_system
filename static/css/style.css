@@ -64,3 +64,15 @@ body{
   height: 200px;
 }
 /* end of homepage */
+
+/* scan text from image */
+.img-display {
+  height: 250px;
+  clear: both;
+  width: 100%;
+  background: url('../images/prod_img_replacement.jpg');
+  background-size: 100% 250px;
+  background-repeat: no-repeat;
+  /* background: rgba(0, 0, 0, .05); */
+}
+/* end of scan text from image */
