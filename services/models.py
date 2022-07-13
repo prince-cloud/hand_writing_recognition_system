@@ -7,9 +7,10 @@ TRANSLATE_TO = (
     ("es", "Spanish"),
     ("fr", "French"),
     ("de", "German"),
-    ("af", "Twi"),
+    # ("af", "Twi"),
     ("ha", "Hausa"),
 )
+
 
 class ScanedTextImage(models.Model):
     image = models.ImageField(upload_to="scanned_images/")
@@ -23,8 +24,10 @@ class ScanedTextImage(models.Model):
 
 class TranslateText(models.Model):
     text = models.TextField()
-    translate_to = models.CharField(choices=TRANSLATE_TO, max_length=100, null=True,blank=True)
-    translated_text = models.TextField(null=True,blank=True)
+    translate_to = models.CharField(
+        choices=TRANSLATE_TO, max_length=100, null=True, blank=True
+    )
+    translated_text = models.TextField(null=True, blank=True)
 
     date_created = models.DateTimeField(auto_now_add=True)
 

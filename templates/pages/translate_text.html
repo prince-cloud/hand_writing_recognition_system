@@ -34,12 +34,20 @@ Scan Text
 
                     <input type="submit" class="btn btn-dark btn-lg mt-5" value="Translate">
                 </form>
-            </div>
-        </div>
-        <br>
 
+
+            </div>
+            <br>
+            {% if translation != "" %}
+            <textarea id="" rows="4" style="width: 100%;">
+                {{ translation }}
+                </textarea>
+            {% endif %}
+            <br>
+        </div>
+
+        <br>
+        <br>
     </div>
-    <br>
-    <br>
-</div>
-{% endblock %}
+
+    {% endblock %}
