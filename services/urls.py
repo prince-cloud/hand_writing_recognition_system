@@ -19,4 +19,8 @@ urlpatterns = [
 
     path('api/scantext/', views.scan_text_api, name="scan_text_api"),
     path('api/translate/', views.translateText_api, name="translateText_api"),
+
+    ## epxport
+    path('exportScanText/', views.exportScanText, name="exportScanText"),
+    path('exportTranslateText/', views.exportTranslateText, name="exportTranslateText"),
 ]

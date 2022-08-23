@@ -1,7 +1,7 @@
 from pydoc import doc
 import secrets
 from django.http import HttpRequest, JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
 
@@ -13,12 +13,78 @@ from django.conf import settings
 import base64
 from django.utils import timezone
 from services.forms import ScanTextForm, TranslateTextForm, TextToSpeechForm
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+from io import BytesIO
+from django.http import HttpResponse
+from docx import Document
+from io import StringIO
+#pdf = render_to_pdf('pdf_template.html', {'purchase': order})
+# return HttpResponse(pdf, content_type='application/pdf')
 
 # Create your views here.
-
+def render_to_pdf(template_src, context_dict={}):
+    template = get_template(template_src)
+    html = template.render(context_dict)
+    result = BytesIO()
+    pdf = pisa.pisaDocument(BytesIO(html.encode("ISO-8859-1")), result)
+    if not pdf.err:
+        return HttpResponse(result.getvalue(), content_type='application/pdf')
+    return None
 
 def index(request):
     return render(request, "index.html", {"ScanTextForm": ScanTextForm()})
+
+
+def exportScanText(request):
+    text = request.GET.get('text')
+    ex_type = request.GET.get('ex_type')
+    if ex_type == 'word':
+       document = Document()
+       if text:
+            document.add_paragraph(text)
+            f = BytesIO()
+            document.save(f)
+            length = f.tell()
+            f.seek(0)
+            response = HttpResponse(
+                f.getvalue(),
+                content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+            )
+            response['Content-Disposition'] = 'attachment; filename=' + 'word_document.docx'
+            response['Content-Length'] = length
+            return response
+    else:
+        if text:
+            pdf = render_to_pdf('pdf_template.html', {'text': text})
+            return HttpResponse(pdf, content_type='application/pdf')
+    return render(request, 'pages/scan_text.html', {'text':text})
+
+
+def exportTranslateText(request):
+    text = request.GET.get('text')
+    ex_type = request.GET.get('ex_type')
+    if ex_type == 'word':
+       document = Document()
+       if text:
+            document.add_paragraph(text)
+            f = BytesIO()
+            document.save(f)
+            length = f.tell()
+            f.seek(0)
+            response = HttpResponse(
+                f.getvalue(),
+                content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+            )
+            response['Content-Disposition'] = 'attachment; filename=' + 'word_document.docx'
+            response['Content-Length'] = length
+            return response
+    else:
+        if text:
+            pdf = render_to_pdf('pdf_template.html', {'text': text})
+            return HttpResponse(pdf, content_type='application/pdf')
+    return render(request, 'pages/translate_text.html', {'text':text})
+
 
 
 def scan_text(request: HttpRequest):
@@ -203,6 +269,8 @@ def text_to_speech_api(request: HttpRequest):
             "success": success,
             "message": message,
             "filename": (settings.MEDIA_URL + filename).replace("//", "/"),
+            #"filename": ('https://585f-102-176-94-120.eu.ngrok.io' + filename).replace("//", "/"),
+
         }
     )
 
@@ -301,3 +369,32 @@ def translateText_api(request: HttpRequest):
             "message": "translation success",
         }
     )
+
+
+
+#def exportToWord(request, text):
+#    #text = request.GET.get('text')
+#    document = Document()
+#    if text:
+#        document.add_paragraph(text)
+#        f = BytesIO()
+#        document.save(f)
+#        length = f.tell()
+#        f.seek(0)
+#        response = HttpResponse(
+#            f.getvalue(),
+#            content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+#        )
+#        response['Content-Disposition'] = 'attachment; filename=' + 'word_document.docx'
+#        response['Content-Length'] = length
+#        return response
+#    return render(request, 'pages/scan_text.html', {'text':text})
+#
+#
+#def exportToPdf(request):
+#    text = request.GET.get('text')
+#    if text:
+#        pdf = render_to_pdf('pdf_template.html', {'text': text})
+#        return HttpResponse(pdf, content_type='application/pdf')
+#    return render(request, 'pages/scan_text.html', {'text':text})
+#
