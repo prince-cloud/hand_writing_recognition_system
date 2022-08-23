@@ -13,4 +13,5 @@ media
 neural-models
 scanned_images
 scanned_images/
-
+.vscode
+.vscode/
