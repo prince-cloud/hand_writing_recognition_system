@@ -1,1 +1,1 @@
-web gunicorn hwrs.config.wsgi:application --log-file -
+web gunicorn hwrs/config.wsgi:application --log-file -
