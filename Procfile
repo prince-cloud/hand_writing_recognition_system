@@ -1,0 +1,1 @@
+web gunicorn hwrs.wsgi:application --log-file -

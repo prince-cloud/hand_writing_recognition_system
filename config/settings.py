@@ -1,5 +1,7 @@
 import os
 from pathlib import Path
+import django_heroku
+import dj_database_url
 
 # GENERAL
 # ------------------------------------------------------------------------------
@@ -178,5 +180,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = "/media/"
 MEDIA_ROOT =  BASE_DIR / "media"
 
+django_heroku.settings(locals())
 
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = r'./ServiceAccountAPI.json'
