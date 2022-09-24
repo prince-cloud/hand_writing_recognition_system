@@ -1,0 +1,164 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "GhanaNLP Translation REST API",
+        "description": "The GhanaNLP Translation REST API",
+        "termsOfService": "https://algorine.com/termsofuse/",
+        "contact": {
+            "name": "GhanaNLP",
+            "url": "https://ghananlp.org/",
+            "email": "natural.language.proccessing.gh@gmail.com"
+        },
+        "license": {
+            "name": "End User License Agreement (EULA)",
+            "url": "https://algorine.com/termsofuse/"
+        },
+        "version": "v1"
+    },
+    "servers": [
+        {
+            "url": "https://translation-api.ghananlp.org/v1"
+        }
+    ],
+    "paths": {
+        "/translate": {
+            "post": {
+                "summary": "Translates given input string",
+                "description": "Translates given input string",
+                "operationId": "post-translate",
+                "requestBody": {
+                    "description": "Translates given input string",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/translate"
+                            },
+                            "example": {
+                                "in": "Translation text",
+                                "lang": "en-tw"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/translationResponse"
+                                },
+                                "example": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responseError"
+                                },
+                                "example": {
+                                    "type": "Error type",
+                                    "message": "Error message"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "translate": {
+                "required": [
+                    "in",
+                    "lang"
+                ],
+                "type": "object",
+                "properties": {
+                    "in": {
+                        "maxLength": 512,
+                        "type": "string",
+                        "description": "Input string to be translated. Maximum length is 512 characters",
+                        "format": "string"
+                    },
+                    "lang": {
+                        "enum": [
+                            "en-tw",
+                            "tw-en",
+                            "en-ee",
+                            "ee-en",
+                            "en-dag",
+                            "dag-en",
+                            "en-yo",
+                            "yo-en",
+                            "en-gaa",
+                            "gaa-en"
+                        ],
+                        "type": "string",
+                        "description": "Language pair tag ( from-to ). Should be one of the following : en-tw,tw-en, en-ee, ee-en, en-dag, dag-en, en-yo, yo-en, en-gaa, gaa-en. English - en, Twi - tw, Ga - gaa, Ewe - ee, Dagbani - dag, Yoruba - yo",
+                        "format": "string"
+                    }
+                },
+                "example": {
+                    "in": "Translation text",
+                    "lang": "en-tw"
+                }
+            },
+            "translationResponse": {
+                "type": "string",
+                "description": "Translated text"
+            },
+            "responseError": {
+                "required": [
+                    "type",
+                    "message"
+                ],
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "description": "Error type"
+                    },
+                    "message": {
+                        "type": "string",
+                        "description": "Error message"
+                    }
+                },
+                "example": {
+                    "type": "Error type",
+                    "message": "Error message"
+                }
+            }
+        },
+        "securitySchemes": {
+            "apiKeyHeader": {
+                "type": "apiKey",
+                "name": "Ocp-Apim-Subscription-Key",
+                "in": "header"
+            },
+            "apiKeyQuery": {
+                "type": "apiKey",
+                "name": "subscription-key",
+                "in": "query"
+            }
+        }
+    },
+    "security": [
+        {
+            "apiKeyHeader": []
+        },
+        {
+            "apiKeyQuery": []
+        }
+    ],
+    "tags": [
+        {
+            "name": "Translation Controller",
+            "description": "Everything about API translation"
+        }
+    ]
+}

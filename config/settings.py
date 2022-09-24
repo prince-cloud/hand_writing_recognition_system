@@ -183,3 +183,4 @@ MEDIA_ROOT =  BASE_DIR / "media"
 django_heroku.settings(locals())
 
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = r'./ServiceAccountAPI.json'
+os.environ['NLP_API'] = r'./NLPapi.json'

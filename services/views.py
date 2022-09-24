@@ -4,7 +4,6 @@ from django.http import HttpRequest, JsonResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
-
 # packages
 from google.cloud.vision_v1 import types
 from google.cloud import vision_v1, translate_v2, texttospeech_v1
@@ -34,6 +33,10 @@ def render_to_pdf(template_src, context_dict={}):
 
 def index(request):
     return render(request, "index.html", {"ScanTextForm": ScanTextForm()})
+
+
+def englishTwi(request: HttpRequest):
+    pass
 
 
 def exportScanText(request):
