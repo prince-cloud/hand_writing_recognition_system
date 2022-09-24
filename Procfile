@@ -1,3 +1,3 @@
 
 
-web: gunicorn config.wsgi
+web: gunicorn hwrs.config.wsgi
