@@ -197,13 +197,18 @@ def texttospeech(request):
                 voice=voice,
                 audio_config=audio_config,
             )
-            print("======== printing response: ", response)
-            filename = generate_file_name()
-            print(settings.MEDIA_ROOT, filename)
-            save_destination = str(settings.MEDIA_ROOT) + filename
-            with open(save_destination, "wb") as output:
-                output.write(response.audio_content)
 
+            filename = generate_file_name()
+            media_root = str(settings.MEDIA_ROOT)
+            if '/app' in media_root:
+                new_root = media_root.split('/app')[::1]
+                save_destination = new_root[1] + filename
+                with open(save_destination, "wb") as output:
+                    output.write(response.audio_content)
+            else:
+                save_destination = str(settings.MEDIA_ROOT) + filename
+                with open(save_destination, "wb") as output:
+                    output.write(response.audio_content)
             ttsform.save()
         else:
             print("invalid data entry")
@@ -249,9 +254,20 @@ def text_to_speech_api(request: HttpRequest):
             )
             filename = generate_file_name()
             print(settings.MEDIA_ROOT, filename)
-            save_destination = str(settings.MEDIA_ROOT) + filename
-            with open(save_destination, "wb") as output:
-                output.write(response.audio_content)
+            #save_destination = str(settings.MEDIA_ROOT) + filename
+            #with open(save_destination, "wb") as output:
+            #    output.write(response.audio_content)
+
+            media_root = str(settings.MEDIA_ROOT)
+            if '/app' in media_root:
+                new_root = media_root.split('/app')[::1]
+                save_destination = new_root[1] + filename
+                with open(save_destination, "wb") as output:
+                    output.write(response.audio_content)
+            else:
+                save_destination = str(settings.MEDIA_ROOT) + filename
+                with open(save_destination, "wb") as output:
+                    output.write(response.audio_content)
 
             ttsform.save()
             success = True
