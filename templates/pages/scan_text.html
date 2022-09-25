@@ -28,11 +28,24 @@ Scan Text
                     <br>
                     <form class="forms-sample dropzone" method="post" enctype="multipart/form-data">
                         {% csrf_token %}
-                        <div class="form-group dropzone">
+                        <!-- <div class="form-group dropzone">
                             {{ form }}
                         </div>
                         <br>
-                        <input type="submit" class="btn btn-dark btn-lg btn-block mt-3" value="Scan Text">
+                        <input type="submit" class="btn btn-dark btn-lg btn-block mt-3" value="Scan Text"> -->
+
+                        <div class=" image-form-section">
+                            <label>Add Image*:</label>
+                            <div class="position-relative">
+                                <div class="img-display">
+                                </div>
+                                <p class="position-absolute" style="bottom: 0; left: 0; z-index: 12;">
+                                    {{ form.image }}</p>
+                            </div>
+                        </div>
+                        
+
+
                     </form>
                 </div>
             </div>
@@ -84,6 +97,13 @@ Scan Text
     </div>
 
 </div>
+
+<script>
+
+
+
+
+</script>
 
 
 {% endblock %}
