@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
-import django_heroku
-import dj_database_url
+#import django_heroku
+#import dj_database_url
 
 # GENERAL
 # ------------------------------------------------------------------------------
@@ -185,5 +185,5 @@ MEDIA_ROOT =  BASE_DIR / "media"
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = r'./ServiceAccountAPI.json'
 os.environ['NLP_API'] = r'./NLPapi.json'
 
-django_heroku.settings(locals())
+#django_heroku.settings(locals())
 
