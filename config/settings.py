@@ -29,7 +29,7 @@ INSTALLED_APPS = [
 
     # Third-party
     'allauth',
-    #'allauth.account',
+    'allauth.account',
     'crispy_forms',
     'debug_toolbar',
 
