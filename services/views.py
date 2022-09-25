@@ -1,13 +1,10 @@
-from pydoc import doc
 import secrets
 from django.http import HttpRequest, JsonResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
 # packages
-from google.cloud.vision_v1 import types
 from google.cloud import vision_v1, translate_v2, texttospeech_v1
-from translate import Translator
 from django.conf import settings
 import base64
 from django.utils import timezone
