@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 import django_on_heroku
-#import dj_database_url
+import dj_database_url
 
 # GENERAL
 # ------------------------------------------------------------------------------
