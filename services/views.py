@@ -15,6 +15,8 @@ from io import BytesIO
 from django.http import HttpResponse
 from docx import Document
 from io import StringIO
+
+from services.translation import TwiTranslator
 #pdf = render_to_pdf('pdf_template.html', {'purchase': order})
 # return HttpResponse(pdf, content_type='application/pdf')
 
@@ -129,6 +131,8 @@ def translateText(request):
     translation = ""
     translate_to = ""
     translate_client = translate_v2.Client()
+    error = None
+
 
     if request.method == "POST":
         form = TranslateTextForm(data=request.POST, files=request.FILES)
@@ -142,15 +146,22 @@ def translateText(request):
 
             # translator = Translator(to_lang=f"{translate_to}")
             # translation = translator.translate(f"{text}")
-            translate_text = translate_client.translate(
-                text,
-                target_language=translate_to,
-            )
+            if translate_to == "tw":
+                translation, error = TwiTranslator().translate(text)
+                if error:
+                    messages.error(request, error)
+                else:
+                    translateForm.translated_text = translation
+            else:
+                translate_text = translate_client.translate(
+                    text,
+                    target_language=translate_to,
+                )
 
-            print(translation)
-            translateForm.translated_text = translate_text["translatedText"]
-            translation = translate_text["translatedText"]
-            translateForm.save()
+                translateForm.translated_text = translate_text["translatedText"]
+                translation = translate_text["translatedText"]
+            if not error:
+                translateForm.save()
         else:
             messages.error(request, "invalid data entry")
     else:
@@ -317,7 +328,7 @@ def translateText_api(request: HttpRequest):
     translation = ""
     translate_to = ""
     translate_client = translate_v2.Client()
-
+    error = None
     if request.method == "POST":
         form = TranslateTextForm(data=request.POST, files=request.FILES)
         if form.is_valid():
@@ -331,32 +342,31 @@ def translateText_api(request: HttpRequest):
 
             # translator = Translator(to_lang=f"{translate_to}")
             # translation = translator.translate(f"{text}")
-            translation_text = translate_client.translate(
-                text,
-                target_language=translate_to,
-            )
-
-            # print (translation['translatedText'])
-            translateForm.translated_text = translation_text["translatedText"]
-            translation = translation_text["translatedText"]
-            translateForm.save()
+            if translate_to == "tw":
+                translation, error = TwiTranslator().translate(text)
+                translateForm.translated_text = translation
+            else:
+                translation_text = translate_client.translate(
+                    text,
+                    target_language=translate_to,
+                )
+                # print (translation['translatedText'])
+                translateForm.translated_text = translation_text["translatedText"]
+                translation = translation_text["translatedText"]
+            if not error:
+                translateForm.save()
         else:
-            return JsonResponse(
-                {
-                    "translation": translation,
-                    "translated_to": translate_to,
-                    "success": False,
-                    "message": "Translation faild. Please try again later.",
-                }
-            )
-
+            error =  "Translation faild. Please try again later."
     else:
+        error = "form failed"
+
+    if error:
         return JsonResponse(
             {
                 "translation": translation,
                 "translated_to": translate_to,
                 "success": False,
-                "message": "form failed",
+                "message": error,
             }
         )
 

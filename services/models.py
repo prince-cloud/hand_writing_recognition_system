@@ -3,6 +3,7 @@ from django.db import models
 # Create your models here.
 
 TRANSLATE_TO = (
+    ("tw", "Twi"),
     ("es", "Spanish"),
     ("fr", "French"),
     ("de", "German"),

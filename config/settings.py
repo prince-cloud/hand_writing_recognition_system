@@ -182,6 +182,6 @@ MEDIA_ROOT =  BASE_DIR / "media"
 
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = r'./ServiceAccountAPI.json'
 os.environ['NLP_API'] = r'./NLPapi.json'
-
+NLP_PRIMARY_KEY="c1ccbce52fe64cc281ec259e5fc51d52"
 
 
