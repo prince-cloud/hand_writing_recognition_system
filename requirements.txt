@@ -2,8 +2,6 @@ Django
 django-allauth
 django-crispy-forms
 django-debug-toolbar
-django-heroku
-django-on-heroku
 google-api-core
 google-auth
 google-cloud-core
