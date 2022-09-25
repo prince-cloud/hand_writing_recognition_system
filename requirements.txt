@@ -16,3 +16,4 @@ gunicorn
 Pillow
 PyPDF3
 xhtml2pdf
+python-docx
