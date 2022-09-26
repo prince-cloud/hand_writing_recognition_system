@@ -106,7 +106,7 @@ def scan_text(request: HttpRequest):
             docText = response.full_text_annotation.text
             print(docText)
             scan_form.save()
-            myimageurl = "http://localhost:8000/media/scanned_images/" + str(image_file)
+            myimageurl = "http://prime-scanner.uzuriglobal.com/media/scanned_images/" + str(image_file)
 
         else:
             messages.error(request, "form invalid")
