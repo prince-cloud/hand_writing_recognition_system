@@ -14,7 +14,6 @@ from xhtml2pdf import pisa
 from io import BytesIO
 from django.http import HttpResponse
 from docx import Document
-from io import StringIO
 
 from services.translation import TwiTranslator
 #pdf = render_to_pdf('pdf_template.html', {'purchase': order})
@@ -228,6 +227,7 @@ def texttospeech(request):
     )
 
 
+    
 @csrf_exempt
 def text_to_speech_api(request: HttpRequest):
     success = True
@@ -279,7 +279,6 @@ def text_to_speech_api(request: HttpRequest):
             "success": success,
             "message": message,
             "filename": (settings.MEDIA_URL + filename).replace("//", "/"),
-            #"filename": ('https://585f-102-176-94-120.eu.ngrok.io' + filename).replace("//", "/"),
 
         }
     )
@@ -340,8 +339,6 @@ def translateText_api(request: HttpRequest):
             text = data["text"]
             translate_to = data["translate_to"]
 
-            # translator = Translator(to_lang=f"{translate_to}")
-            # translation = translator.translate(f"{text}")
             if translate_to == "tw":
                 translation, error = TwiTranslator().translate(text)
                 translateForm.translated_text = translation
@@ -378,32 +375,3 @@ def translateText_api(request: HttpRequest):
             "message": "translation success",
         }
     )
-
-
-
-#def exportToWord(request, text):
-#    #text = request.GET.get('text')
-#    document = Document()
-#    if text:
-#        document.add_paragraph(text)
-#        f = BytesIO()
-#        document.save(f)
-#        length = f.tell()
-#        f.seek(0)
-#        response = HttpResponse(
-#            f.getvalue(),
-#            content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-#        )
-#        response['Content-Disposition'] = 'attachment; filename=' + 'word_document.docx'
-#        response['Content-Length'] = length
-#        return response
-#    return render(request, 'pages/scan_text.html', {'text':text})
-#
-#
-#def exportToPdf(request):
-#    text = request.GET.get('text')
-#    if text:
-#        pdf = render_to_pdf('pdf_template.html', {'text': text})
-#        return HttpResponse(pdf, content_type='application/pdf')
-#    return render(request, 'pages/scan_text.html', {'text':text})
-#

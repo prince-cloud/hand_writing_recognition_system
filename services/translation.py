@@ -1,17 +1,11 @@
 from http import HTTPStatus
 from typing import Optional, Tuple
-from translate import Translator
 from django.conf import settings
 import requests
 
-translator = Translator(to_lang="Spanish")
-translation = translator.translate("Good Morning!")
-
-print(translation)
 
 
 class TwiTranslator:
-    url = "https://translation-api.ghananlp.org/v1/translate"
     url = "https://translation-api.ghananlp.org/v1/translate"
     primary_key = settings.NLP_PRIMARY_KEY
 
