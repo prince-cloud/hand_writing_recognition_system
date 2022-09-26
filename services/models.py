@@ -4,11 +4,10 @@ from django.db import models
 
 TRANSLATE_TO = (
     ("tw", "Twi"),
+    ("ha", "Hausa"),
     ("es", "Spanish"),
     ("fr", "French"),
     ("de", "German"),
-    # ("af", "Twi"),
-    ("ha", "Hausa"),
 )
 
 
